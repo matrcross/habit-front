@@ -1,13 +1,6 @@
 import WeekDaysForAsign from "./WeekDaysForAsign"
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 
-/*
-  Tornar os outros editaveis
-  transformar os habitlist em variavel
-  apagar o input se tiver vazio e apagar da lista tambem (começar back?)
-  começar a ver como fazer deploy disso e usar o dynamoDB
-  talvez começar o drag 
-*/
 
 function WeekContainer() {
   const [habitList, setHabitList] = useState([
@@ -37,8 +30,13 @@ function WeekContainer() {
     ){
       const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
       setHabitList(updatedHabitList);
-      const aboveHabit = document.getElementById(`habit-${habitId-1}`)
-      aboveHabit?.focus()
+
+      setTimeout(() => {
+        const aboveHabit = document.getElementById(`habit-${habitId-1}`)
+        if (aboveHabit) {
+          aboveHabit.focus()
+        }
+      }, 0);
     }
 
     if(e.key == 'Enter'){
