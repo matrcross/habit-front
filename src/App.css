@@ -48,7 +48,9 @@
   content: 'Write your new Habit...';
   color: #363636;
 }
-
+.editable-div{
+  width: fit-content;
+}
 .editable-div:focus{
   outline: none;
 }
@@ -110,6 +112,10 @@ li {
   flex-direction: column;
   margin-left: 10px;
   margin-bottom: 100px;
+}
+
+.habit-item{
+  display: flex;
 }
 
 

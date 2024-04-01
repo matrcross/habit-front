@@ -1,4 +1,4 @@
-// import WeekDaysForAsign from "./WeekDaysForAsign"
+import WeekDaysForAsign from "./WeekDaysForAsign"
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 
 /*
@@ -69,16 +69,21 @@ function WeekContainer() {
     <div>
       <h1>Habits</h1>
       <div className="habit-list-test">
-        {habitList.map((habit, index)=>(
-          <div 
-          key={habit.id}
-          id={`habit-${habit.id}`}
-            onInput={handleChange}
-            className='editable-div' 
-            contentEditable="true"
-            onKeyDown={(event) => handleKeyDown(event, index)}>
-              {habit.name}
-            </div>
+      
+        {habitList.map((habit)=>(
+          <div className="habit-item">
+            <div 
+            key={habit.id}
+            id={`habit-${habit.id}`}
+              onInput={handleChange}
+              className='editable-div' 
+              contentEditable="true"
+              onKeyDown={(event) => handleKeyDown(event, habit.id)}>
+                {habit.name}
+              </div>
+             <WeekDaysForAsign/>
+          </div>
+
         ))}
       </div>
       {/* <div className="habit-list-test">
