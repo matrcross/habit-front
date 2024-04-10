@@ -19,41 +19,46 @@ function WeekContainer() {
     },
   ])
 
+
+
+  const handleBackspaceKey = (habitId: number, index:number) => {
+    const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
+    setHabitList(updatedHabitList);
+
+    setTimeout(() => {
+      const aboveHabit = habitRef.current[index-1]
+      if (aboveHabit) {
+        aboveHabit.focus()
+      }
+    }, 0);
+  }
+
+  const handleEnterKey = (habitId: number, index:number) => {
+    const emptyHabit = {
+      id: habitId+1,
+      name: '',
+      asignAt: ''
+    }
+
+    setHabitList([...habitList, emptyHabit])
+    setTimeout(() => {
+      const newlyCreatedDiv = habitRef.current[index+1];
+      if (newlyCreatedDiv) {
+        newlyCreatedDiv.focus()
+      }
+    }, 0);
+  }
+
   const handleKeys= (e: KeyboardEvent<HTMLDivElement>, habitId: number, index: number) => {
     const element = habitRef.current[index]
     
-    if(e.key == 'Backspace' 
-    && element.textContent == ''
-    && index != 0
-    ){
-      const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
-      setHabitList(updatedHabitList);
-
-      setTimeout(() => {
-        const aboveHabit = habitRef.current[index-1]
-        if (aboveHabit) {
-          aboveHabit.focus()
-        }
-      }, 0);
-    }
-
+    if(e.key == 'Backspace' && element.textContent == '' && index != 0)
+      handleBackspaceKey(habitId, index)
+    
     if(e.key == 'Enter'){
       e.preventDefault();
-      if(index == (habitList.length-1)){
-        const emptyHabit = {
-          id: habitId+1,
-          name: '',
-          asignAt: ''
-        }
-  
-        setHabitList([...habitList, emptyHabit])
-        setTimeout(() => {
-          const newlyCreatedDiv = habitRef.current[index+1];
-          if (newlyCreatedDiv) {
-            newlyCreatedDiv.focus()
-          }
-        }, 0);
-      }
+      if(index == (habitList.length-1)) 
+        handleEnterKey(habitId, index)
       }
   }
 
