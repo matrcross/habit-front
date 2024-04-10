@@ -1,5 +1,5 @@
 import WeekDaysForAsign from "./WeekDaysForAsign"
-import {KeyboardEvent, useRef, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useRef, useState} from "react";
 
 
 function WeekContainer() {
@@ -19,7 +19,10 @@ function WeekContainer() {
     },
   ])
 
-
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target
+    target.classList.toggle('show-after', target.textContent?.trim() == '')
+  };
 
   const handleBackspaceKey = (habitId: number, index:number) => {
     const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
@@ -49,9 +52,28 @@ function WeekContainer() {
     }, 0);
   }
 
+  const handleMovingKeys = (movement: string, index: number) => {
+    if(movement == 'ArrowUp'){
+      const aboveHabit = habitRef.current[index-1]
+      if (aboveHabit) {
+        aboveHabit.focus()
+      }
+    }
+
+    if(movement == 'ArrowDown'){
+      const belowHabit = habitRef.current[index+1]
+      if (belowHabit) {
+        belowHabit.focus()
+      }
+    }
+  }
+
   const handleKeys= (e: KeyboardEvent<HTMLDivElement>, habitId: number, index: number) => {
     const element = habitRef.current[index]
     
+    if(e.key == 'ArrowUp' || e.key == 'ArrowDown') 
+      handleMovingKeys(e.key, index)
+
     if(e.key == 'Backspace' && element.textContent == '' && index != 0)
       handleBackspaceKey(habitId, index)
     
@@ -74,7 +96,7 @@ function WeekContainer() {
             ref={el => el && (habitRef.current[index] = el)}
             key={habit.id}
             id={`habit-${habit.id}`}
-              // onInput={handleChange}
+              onInput={handleChange}
               className={`editable-div ${habit.name.trim() == '' ? 'show-after' : ''}`}
               contentEditable="true"
               onKeyDown={(e) => handleKeys(e, habit.id, index)}>
