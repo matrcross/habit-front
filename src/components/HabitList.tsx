@@ -1,8 +1,11 @@
 import WeekDaysForAsign from "./WeekDaysForAsign"
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {KeyboardEvent, useRef, useState} from "react";
 
 
 function WeekContainer() {
+  const habitRef = useRef<HTMLDivElement[]>([])
+
+  
   const [habitList, setHabitList] = useState([
     {
       id: 0,
@@ -16,23 +19,18 @@ function WeekContainer() {
     },
   ])
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target
-    target.classList.toggle('show-after', target.textContent?.trim() == '')
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>, habitId: number) =>{
-    const focusedElement = e.target as HTMLElement;
-
+  const handleKeys= (e: KeyboardEvent<HTMLDivElement>, habitId: number, index: number) => {
+    const element = habitRef.current[index]
+    
     if(e.key == 'Backspace' 
-    && focusedElement.textContent == ''
-    && habitId != 0
+    && element.textContent == ''
+    && index != 0
     ){
       const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
       setHabitList(updatedHabitList);
 
       setTimeout(() => {
-        const aboveHabit = document.getElementById(`habit-${habitId-1}`)
+        const aboveHabit = habitRef.current[index-1]
         if (aboveHabit) {
           aboveHabit.focus()
         }
@@ -41,7 +39,7 @@ function WeekContainer() {
 
     if(e.key == 'Enter'){
       e.preventDefault();
-      if(habitId == (habitList.length-1)){
+      if(index == (habitList.length-1)){
         const emptyHabit = {
           id: habitId+1,
           name: '',
@@ -50,33 +48,31 @@ function WeekContainer() {
   
         setHabitList([...habitList, emptyHabit])
         setTimeout(() => {
-          const newlyCreatedDiv = document.getElementById(`habit-${emptyHabit.id}`);
+          const newlyCreatedDiv = habitRef.current[index+1];
           if (newlyCreatedDiv) {
-            newlyCreatedDiv.classList.add('show-after');
             newlyCreatedDiv.focus()
           }
         }, 0);
       }
-      document.getElementById(`habit-${habitId+1}`)?.focus()
       }
-      
   }
-
 
   return (
     <div>
       <h1>Habits</h1>
       <div className="habit-list-test">
       
-        {habitList.map((habit)=>(
+        {habitList.map((habit, index)=>(
           <div className="habit-item">
-            <div 
+            <div
+
+            ref={el => el && (habitRef.current[index] = el)}
             key={habit.id}
             id={`habit-${habit.id}`}
-              onInput={handleChange}
-              className='editable-div' 
+              // onInput={handleChange}
+              className={`editable-div ${habit.name.trim() == '' ? 'show-after' : ''}`}
               contentEditable="true"
-              onKeyDown={(event) => handleKeyDown(event, habit.id)}>
+              onKeyDown={(e) => handleKeys(e, habit.id, index)}>
                 {habit.name}
               </div>
              <WeekDaysForAsign/>
