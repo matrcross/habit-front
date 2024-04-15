@@ -1,50 +1,124 @@
-// import WeekDaysForAsign from "./WeekDaysForAsign"
-import {useState, ChangeEvent } from "react";
+import WeekDaysForAsign from "./WeekDaysForAsign"
+import {ChangeEvent, KeyboardEvent, useRef, useState} from "react";
 
-/*
-  Tornar os outros editaveis
-  transformar os habitlist em variavel
-  apagar o input se tiver vazio e apagar da lista tambem (começar back?)
-  começar a ver como fazer deploy disso e usar o dynamoDB
-  talvez começar o drag 
-*/
 
 function WeekContainer() {
-  const [showAfter, setShowAfter] = useState(true)
+  const habitRef = useRef<HTMLDivElement[]>([])
+
+  
+  const [habitList, setHabitList] = useState([
+    {
+      id: 0,
+      name:'Routine A',
+      asignAt:''
+    },
+    {
+      id: 1,
+      name:'Routine B',
+      asignAt:''
+    },
+  ])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setShowAfter(true);
-    if(e.target.innerText){
-      setShowAfter(false);
-    }
-    
+    const target = e.target
+    target.classList.toggle('show-after', target.textContent?.trim() == '')
   };
+
+  const handleBackspaceKey = (habitId: number, index:number) => {
+    const updatedHabitList = habitList.filter(habit => habit.id !== habitId);
+    setHabitList(updatedHabitList);
+
+    setTimeout(() => {
+      const aboveHabit = habitRef.current[index-1]
+      if (aboveHabit) {
+        aboveHabit.focus()
+      }
+    }, 0);
+  }
+
+  const handleEnterKey = (habitId: number, index:number) => {
+    const emptyHabit = {
+      id: habitId+1,
+      name: '',
+      asignAt: ''
+    }
+
+    setHabitList([...habitList, emptyHabit])
+    setTimeout(() => {
+      const newlyCreatedDiv = habitRef.current[index+1];
+      if (newlyCreatedDiv) {
+        newlyCreatedDiv.focus()
+      }
+    }, 0);
+  }
+
+  const handleMovingKeys = (movement: string, index: number) => {
+    if(movement == 'ArrowUp'){
+      const aboveHabit = habitRef.current[index-1]
+      if (aboveHabit) {
+        aboveHabit.focus()
+      }
+    }
+
+    if(movement == 'ArrowDown'){
+      const belowHabit = habitRef.current[index+1]
+      if (belowHabit) {
+        belowHabit.focus()
+      }
+    }
+  }
+
+  const handleKeys= (e: KeyboardEvent<HTMLDivElement>, habitId: number, index: number) => {
+    const element = habitRef.current[index]
+    
+    if(e.key == 'ArrowUp' || e.key == 'ArrowDown') 
+      handleMovingKeys(e.key, index)
+
+    if(e.key == 'Backspace' && element.textContent == '' && index != 0)
+      handleBackspaceKey(habitId, index)
+    
+    if(e.key == 'Enter'){
+      e.preventDefault();
+      if(index == (habitList.length-1)) 
+        handleEnterKey(habitId, index)
+      }
+  }
 
   return (
     <div>
       <h1>Habits</h1>
       <div className="habit-list-test">
-        <div 
-        onInput={handleChange}
-        className={`editable-div ${showAfter ? 'show-after' : ''}`}  
-        contentEditable="true">
-        </div>
-        <div 
-        onInput={handleChange}
-        className={`editable-div ${showAfter ? 'show-after' : ''}`}  
-        contentEditable="true">
-        </div>
+      
+        {habitList.map((habit, index)=>(
+          <div className="habit-item">
+            <div
 
+            ref={el => el && (habitRef.current[index] = el)}
+            key={habit.id}
+            id={`habit-${habit.id}`}
+              onInput={handleChange}
+              className={`editable-div ${habit.name.trim() == '' ? 'show-after' : ''}`}
+              contentEditable="true"
+              onKeyDown={(e) => handleKeys(e, habit.id, index)}>
+                {habit.name}
+              </div>
+             <WeekDaysForAsign/>
+          </div>
+
+        ))}
       </div>
-      {/* <ul className='habit-list'>
-        <li className='habit'>Routine 1 
-        <WeekDaysForAsign/>
-        </li>
-        <input className="input-habit" type="text"placeholder="Write your new Habit..." />
-        <li className='habit'>Routine 2 <span className="no-asign">no asign</span></li>
-        <li className='habit'>Routine 3 <span className="no-asign">no asign</span></li>
-        <li className='habit'>Routine 4 <span className="no-asign">no asign</span></li>
-      </ul> */}
+      {/* <div className="habit-list-test">
+        <div 
+        onInput={handleChange}
+        className='editable-div show-after' 
+        contentEditable="true">
+        </div>
+        <div 
+        onInput={handleChange}
+        className='editable-div show-after'  
+        contentEditable="true">
+        </div>
+      </div> */}
     </div>
   )
 }
