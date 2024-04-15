@@ -1,6 +1,5 @@
 // import WeekDaysForAsign from "./WeekDaysForAsign"
-
-import { ChangeEvent, useState } from "react";
+import {useState, ChangeEvent } from "react";
 
 /*
   Tornar os outros editaveis
@@ -11,27 +10,38 @@ import { ChangeEvent, useState } from "react";
 */
 
 function WeekContainer() {
-  const [inputValue, setInputValue] = useState('Routine A');
-  
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+  const [showAfter, setShowAfter] = useState(true)
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setShowAfter(true);
+    if(e.target.innerText){
+      setShowAfter(false);
+    }
+    
   };
 
   return (
     <div>
       <h1>Habits</h1>
       <div className="habit-list-test">
-        <input className="input-habit" value={inputValue} onChange={handleInputChange}  type="text" placeholder="Write your new Habit..." />
-        <input className="input-habit" type="text" placeholder="Write your new Habit..." /> 
-        <input className="input-habit" value={'Routine B'} type="text" placeholder="Write your new Habit..." />
-        <input className="input-habit" value={'Routine C'} type="text" placeholder="Write your new Habit..." /> 
+        <div 
+        onInput={handleChange}
+        className={`editable-div ${showAfter ? 'show-after' : ''}`}  
+        contentEditable="true">
+        </div>
+        <div 
+        onInput={handleChange}
+        className={`editable-div ${showAfter ? 'show-after' : ''}`}  
+        contentEditable="true">
+        </div>
+
       </div>
       {/* <ul className='habit-list'>
         <li className='habit'>Routine 1 
-          <WeekDaysForAsign/>
+        <WeekDaysForAsign/>
         </li>
-        <li className='habit'>Routine 2 <span className="no-asign">no asign</span></li>
         <input className="input-habit" type="text"placeholder="Write your new Habit..." />
+        <li className='habit'>Routine 2 <span className="no-asign">no asign</span></li>
         <li className='habit'>Routine 3 <span className="no-asign">no asign</span></li>
         <li className='habit'>Routine 4 <span className="no-asign">no asign</span></li>
       </ul> */}

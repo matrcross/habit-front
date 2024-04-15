@@ -30,6 +30,29 @@
   /* box-shadow: 3px 4px 1px #584545; */
 }
 
+.editable-div{
+  background-color: transparent;
+  border: 0;
+  height: 30px;
+  /* border-bottom: 1px solid rgb(75, 75, 75); */
+  color: #a434e9;
+  font-weight: 500;
+  font-size: 17px;
+  font-family: "Inter";
+  /* box-shadow: inset 0px 2px 3px 3px #272727; */
+  /* box-shadow: 3px 4px 1px #584545; */
+  margin-bottom: 10px;
+}
+
+.show-after::after{
+  content: 'Write your new Habit...';
+  color: #363636;
+}
+
+.editable-div:focus{
+  outline: none;
+}
+
 .input-habit::placeholder{
   color: #363636;
 }
@@ -118,7 +141,13 @@ ul {
   overflow: hidden; 
   padding: 20px 20px;
   box-sizing: border-box;
+  transition: 1s ease;
 }
+
+.week-day-card:hover{
+  transform: scale(1.05);
+}
+
 
 
 

@@ -13,7 +13,7 @@ function App() {
         complete: false
        },
        {
-        id:0,
+        id:1,
         name:'Routine B',
         asign:false,
         complete: false
@@ -21,7 +21,7 @@ function App() {
     },
     tuesday: {
       habits:[{
-        id:0,
+        id:2,
         name:'Routine A',
         asign:false,
         complete: false
