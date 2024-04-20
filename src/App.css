@@ -105,6 +105,7 @@ li {
   font-weight: 500;
   font-size: 17px;
   font-family: "Inter";
+  margin-bottom: 10px;
 }
 
 .habit-list-test{
@@ -142,6 +143,7 @@ ul {
 .week-day-card {
   min-height: 290px;
   min-width: 180px;
+  max-width: 180px;
   background-color: #202020;
   box-shadow: 3px 4px 1px #4A0176;
   overflow: hidden; 
@@ -154,10 +156,19 @@ ul {
   transform: scale(1.05);
 }
 
-
-
-
 .check-habits {
   display: flex;
   gap: 3px;
+  align-items: flex-start;
+}
+
+.habit-on-card{
+  display: inline-block;
+  width: 130px; /* Fixed width to limit growth */
+  white-space: normal; /* Allow content to wrap */
+  word-wrap: break-word; /* Break words if they exceed width */
+}
+
+.habit-on-card:hover{
+  text-decoration: underline;
 }

@@ -30,7 +30,7 @@ return (
               type="checkbox" 
               onChange={() => handleToggle(dayName, index, habit)}
               />
-              <span >{habit.name}</span>
+              <span className="habit-on-card">{habit.name}</span>
             </li>
           ))
         }
