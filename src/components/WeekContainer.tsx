@@ -1,7 +1,7 @@
 import WeekDayCard, { Habit, dayName } from "./WeekDayCard"
 
 export type WeekContainerType = {
-  weekDays:{
+  weekdays:{
     monday:{
       habits:Habit[]
       tasks?:string
@@ -34,16 +34,16 @@ export type WeekContainerType = {
   handleToggle: (dayName?: dayName, index?: number, habit?: Habit) => void
 }
 
-function WeekContainer({weekDays, handleToggle}: WeekContainerType) {
+function WeekContainer({weekdays, handleToggle}: WeekContainerType) {
   return (
     <div className='week-container'>
-      <WeekDayCard dayName='monday' habits={weekDays.monday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='tuesday' habits={weekDays.tuesday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='wednesday' habits={weekDays.wednesday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='thursday' habits={weekDays.thursday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='friday' habits={weekDays.friday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='saturday' habits={weekDays.saturday.habits || []} handleToggle={handleToggle}/>
-      <WeekDayCard dayName='sunday' habits={weekDays.sunday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='monday' habits={weekdays.monday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='tuesday' habits={weekdays.tuesday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='wednesday' habits={weekdays.wednesday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='thursday' habits={weekdays.thursday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='friday' habits={weekdays.friday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='saturday' habits={weekdays.saturday.habits || []} handleToggle={handleToggle}/>
+      <WeekDayCard dayName='sunday' habits={weekdays.sunday.habits || []} handleToggle={handleToggle}/>
     </div>
   )
 }
